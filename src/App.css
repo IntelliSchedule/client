@@ -1,3 +1,11 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+  background: #F6FFFC;
+}
+
 /* Initial style for popup */
 .initial {
   display: flex;
@@ -9,8 +17,11 @@
   justify-content: center;
   box-shadow: #f2f2f2;
 }
-.summary{
+.summary-container{
   color:black;
+  margin: 1rem;
+  border-top: #08242D 1px solid;
+  padding-top: 1rem;
 }
 .button{
   width: 170px;
@@ -21,8 +32,6 @@
   font-size: 20px;
   font-weight: bold;
   color: white;
-  font-size: 20px;
-  font-weight: bold;
 }
 .button::after{
   content: "Find Top Professors";
@@ -42,7 +51,7 @@ body.expanded {
 .container {
   display: flex;
   color: white;
-  background-color: #DEE1ED;
+  background: #F6FFFC;
   justify-content: space-evenly;
   align-items: center;
   margin : 0 auto;
@@ -51,6 +60,10 @@ body.expanded {
   flex-direction: column;
   margin-top: 0.95rem;
 
+}
+
+.container--summary{
+  justify-content: unset;
 }
   
 .child-container {
@@ -61,6 +74,7 @@ body.expanded {
   font-weight: bold;
   display: flex;
   flex-direction: row;
+  color: #08242D;
   margin: 0;
   border-radius: 5%;
   overflow: hidden; 
@@ -76,7 +90,7 @@ body.expanded {
 }
 
 .card_left{
-
+  margin-top: 0.85rem;
   width: 89%;
   display: flex;
   flex-direction: column;
@@ -88,6 +102,11 @@ body.expanded {
   width: 22px;
   height: 22px;
   margin-bottom: 0.75rem;
+}
+
+.arrow.rotate {
+  transform: rotate(90deg);
+  transition: transform 0.3s ease-in-out;
 }
 
 .card_right{
@@ -105,10 +124,10 @@ body.expanded {
     display: flex;
     height: 2%;
     width: 32%;
-    margin-left: 0.4rem;
     flex-direction: row;
     justify-content: start;
     align-items: center;
+    color: white;
 }
 .card_title {
   font-size: 14px;
@@ -120,6 +139,7 @@ body.expanded {
 }
 .card_ratings{
   display: flex;
+  margin-top: .5rem;
   flex-direction: row;
   justify-content: inherit;
   align-items: center;
@@ -142,8 +162,9 @@ body.expanded {
   align-items: center;
 }
 .card_name{
-  font-size: 16px;
-  margin-left: 1.84rem;
+  font-size: 14px;
+  margin-left: 1.2rem;
+  color: white;
 }
 .card_cart{
   width: 47px;

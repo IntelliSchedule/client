@@ -9,15 +9,17 @@ function App() {
   const [professorInformationList, setProfessorInformationList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showButton, setShowButton] = useState(true);
-  const [currentLoadingPhrase, setCurrentLoadingPhrase] =
-    useState("Loading...");
+  const [currentLoadingPhrase, setCurrentLoadingPhrase] = useState(
+    "We are in the process of getting professors reviews and ratings."
+  );
+  const [selectedProfessor, setSelectedProfessor] = useState(null);
+  const [rotateArrow, setRotateArrow] = useState(false);
 
   const loadingPhrases = [
-    "We are in the process of getting professors reviews and ratings.",
-    "While rate my professor is not always reliable we do our best to get the the most relevent points to help you make your choice.",
-    "We save results on for the professors you search for so you can quickly access them later.",
+    "Rate my professor reviews are not always reliable. We do our best to get the the most relevent points to help you make the best choice for you.",
+    "We save results for the professors that are searched for so you can quickly access them later.",
   ];
-  console.log(professorInformationList.info);
+
   const fetchData = () => {
     setIsLoading(true);
 
@@ -25,9 +27,9 @@ function App() {
     const tempData = {
       professorNames: [
         "deborah abel",
-        // "tatiana genin",
-        // "juan pereira",
-        // "gianno feoli",
+        "tatiana genin",
+        "juan pereira",
+        "gianno feoli",
       ],
     };
 
@@ -55,7 +57,7 @@ function App() {
       const interval = setInterval(() => {
         setCurrentLoadingPhrase(loadingPhrases[index]);
         index = (index + 1) % 3;
-      }, 5000);
+      }, 7000);
 
       return () => clearInterval(interval);
     }
@@ -64,6 +66,15 @@ function App() {
   const handleFindButtonClick = () => {
     setShowButton(false);
     fetchData();
+  };
+
+  const handleArrowClick = (professorName) => {
+    setRotateArrow(!rotateArrow); // Toggle the rotate state
+    if (selectedProfessor === professorName) {
+      setSelectedProfessor(null);
+    } else {
+      setSelectedProfessor(professorName);
+    }
   };
 
   // function handleCardClick() {
@@ -92,34 +103,61 @@ function App() {
       )}
 
       {!isLoading && !showButton && (
-        <div class="container" id="mainContainer">
+        <div
+          className={`container ${
+            selectedProfessor === null ? "" : "container--summary"
+          } `}
+          id="mainContainer"
+        >
           {Object.entries(professorInformationList)
             .slice(0, 3)
             .map(([professorName, info]) => (
-              <div className="child-container">
-                {console.log(info.avgDifficulty)}
-                {console.log(info.avgRating)}
-                {console.log(info.sentiment)}
-                <div className="card_left">
-                  <div className="card_titles">
-                    <div className="card_title">Overall</div>
-                    <div className="card_title">Difficulty</div>
-                    <div className="card_title">Take Again</div>
+              <React.Fragment key={professorName}>
+                {(selectedProfessor === null ||
+                  selectedProfessor === professorName) && (
+                  <div className="child-container">
+                    {console.log(info.avgDifficulty)}
+                    {console.log(info.avgRating)}
+                    {console.log(info.sentiment)}
+                    <div className="card_left">
+                      <div className="card_titles">
+                        <div className="card_title">Overall</div>
+                        <div className="card_title">Difficulty</div>
+                        <div className="card_title">Take Again</div>
+                      </div>
+                      <div className="card_ratings">
+                        <div className="card_rating">{`${info.avgRating}`}</div>
+                        <div className="card_rating">{`${info.avgDifficulty}`}</div>
+                        <div className="card_rating">{`${info.sentiment}`}</div>
+                      </div>
+                      <div className="card_bottom">
+                        <div className="card_name">{professorName}</div>
+                        <img
+                          className="card_cart"
+                          src={cart}
+                          alt="shopping cart"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="card_right"
+                      onClick={() => handleArrowClick(professorName)}
+                    >
+                      <img
+                        className={`arrow ${rotateArrow ? "rotate" : ""}`}
+                        src={arrow}
+                        alt="drop down arrow"
+                      />
+                    </div>
                   </div>
-                  <div className="card_ratings">
-                    <div className="card_rating">{`${info.avgRating}`}</div>
-                    <div className="card_rating">{`${info.avgDifficulty}`}</div>
-                    <div className="card_rating">{`${info.sentiment}`}</div>
+                )}
+                {selectedProfessor === professorName && (
+                  <div className="summary-container">
+                    {/* Render your summary component or JSX here */}
+                    <p>{info.summary}</p>
                   </div>
-                  <div className="card_bottom">
-                    <div className="card_name">{professorName}</div>
-                    <img className="card_cart" src={cart} alt="shopping cart" />
-                  </div>
-                  <div className="card_right">
-                    <img className="arrow" src={arrow} alt="drop down arrow" />
-                  </div>
-                </div>
-              </div>
+                )}
+              </React.Fragment>
             ))}
         </div>
       )}
